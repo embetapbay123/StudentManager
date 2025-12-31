@@ -11,9 +11,49 @@ public class StudentManager {
     public StudentManager() {
         this.students = new ArrayList<>();
     }
+    // Helper
+    public Student findStudentById(String student_id) {
+        for (Student s : this.students) {
+            // So sánh string thì dùng .equals
+            if (s.getId().equalsIgnoreCase(student_id)) return s;
+        }
+        return null;
+    }
     public void addStudent(Student student) {
         this.students.add(student);
         System.out.println("Đã thêm sinh viên...");
+    }
+    // Xài boolean chứ không nên in ra thông báo
+    public boolean deleteStudent(String student_id) {
+        Student s = findStudentById(student_id);
+        if (s == null) {
+//            System.out.println("Không tìm thấy sinh viên có id: " + student_id);
+            return false;
+        }
+        else {
+            this.students.remove(s);
+//            System.out.println("Xóa thành công sinh viên có id: " + student_id);
+            return true;
+        }
+    }
+    public boolean updateStudent(String student_id, Scanner scanner) {
+        Student s = this.findStudentById(student_id);
+        if (s == null) {
+//            System.out.println("Không tìm thấy sinh viên có id: " + student_id);
+            return false;
+        }
+        else {
+            System.out.print("Nhập id mới (Nhấn Enter để bỏ qua): ");
+            String id = scanner.nextLine();
+            System.out.print("Nhập tên mới (Nhấn Enter để bỏ qua): ");
+            String name = scanner.nextLine();
+            System.out.print("Nhập điểm mới (Nhấn -1 để bỏ qua): ");
+            double mark = Double.parseDouble(scanner.nextLine());
+            if (!id.isEmpty())s.setId(id);
+            if (!name.isEmpty()) s.setName(name);
+            if (mark != -1) s.setMark(mark);
+            return true;
+        }
     }
     public void showAll() {
         System.out.println("Danh sách sinh viên:");
