@@ -1,14 +1,15 @@
 import models.Student;
-
+import services.StudentManager;
 public class Main {
     public static void main(String[] args) {
-        Student student = new Student("SV001", "Nguyễn Minh Công", 8.3);
-        // Tạo thử 1 sv
-        System.out.println("Thông tin sinh viên vừa tạo");
-        System.out.println(student); // Không cần thiết phải .toString? chắc là tự convert qua
-        // Thay đổi điểm
-        student.setMark(10);
-        System.out.println("Thông tin sinh viên sau khi đổi thành 10 điểm");
-        System.out.println(student);
+        Student sv1 = new Student("SV001", "Nguyen Van A", 8.5);
+        Student sv2 = new Student("SV002", "Nguyen Van B", 6.5);
+        Student sv3 = new Student("SV003", "Nguyen Van C", 9.5);
+
+        StudentManager sm = new StudentManager();
+        sm.addStudent(sv1);
+        sm.addStudent(sv2);
+        sm.addStudent(sv3);
+        sm.showAll();
     }
 }
