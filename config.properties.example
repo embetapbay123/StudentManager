@@ -1,0 +1,29 @@
+# ============================================
+# StudentManager - Database Configuration
+# ============================================
+# Hướng dẫn:
+# 1. Sao chép file này thành "config.properties"
+# 2. Cập nhật thông tin database của bạn
+# 3. File config.properties sẽ KHÔNG được commit vào Git
+# ============================================
+
+# Database Connection URL
+# Format: jdbc:mysql://[host]:[port]/[database_name]
+db.url=jdbc:mysql://localhost:3306/student_management
+
+# Database Username
+db.username=root
+
+# Database Password
+# ⚠️ Cảnh báo: Thay đổi password mặc định để bảo mật
+db.password=your_password_here
+
+# ============================================
+# Optional Settings (Tùy chọn)
+# ============================================
+
+# Connection Timeout (milliseconds)
+# db.connectionTimeout=30000
+
+# Maximum Pool Size (nếu dùng connection pool)
+# db.maximumPoolSize=10
