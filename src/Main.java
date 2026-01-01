@@ -1,13 +1,22 @@
 import models.Student;
 import services.StudentManager;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    public static Student inputStudent(Scanner scanner) {
+        System.out.print("Nhập id sinh viên: ");
+        String id =  scanner.nextLine();
+        System.out.print("Nhập tên sinh viên: ");
+        String name =  scanner.nextLine();
+        System.out.print("Nhập điểm sinh viên: ");
+        double mark = Double.parseDouble(scanner.nextLine());
+        return new Student(id,name,mark);
+    }
     public static void main(String[] args) {
         StudentManager sm = new StudentManager();
         Scanner sc = new Scanner(System.in);
-        sm.loadFromFile();
         int choice;
         do {
             System.out.println("===MENU QUẢN LÝ SINH VIÊN===");
@@ -17,37 +26,51 @@ public class Main {
             System.out.println("4. Sửa thông tin sinh viên");
             System.out.println("0. Thoát");
             System.out.print("Lựa chọn của bạn: ");
-//            choice = sc.nextInt(); // có 1 lỗi ở đây, buffer đọc luôn dấu \n nhưng thg nextInt k lấy nên bị nhét vào mấy thg sau
             choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
                 case 1: {
                     System.out.println("Nhập thông tin sinh viên");
-                    Student newStudent = sm.inputStudent(sc);
-                    sm.addStudent(newStudent);
+                    Student newStudent = inputStudent(sc);
+                    boolean result = sm.addStudent(newStudent);
+                    if (result) System.out.println("Thêm sinh viên thành công");
+                    else System.out.println("Không thể thêm sinh viên");
                     break;
                 }
                 case 2: {
-                    sm.showAll();
+                    List<Student> students = sm.showAll();
+                    System.out.println("Danh sách sinh viên: ");
+                    if (students != null && !students.isEmpty()) {
+                        for (Student s : students) {
+                            System.out.println(s);
+                        }
+                    }
+                    else {
+                        System.out.println("Hiện tại chưa có sinh viên nào");
+                    }
                     break;
                 }
                 case 3: {
                     System.out.print("Nhập id sinh viên: ");
                     String student_id = sc.nextLine();
-                    if (sm.deleteStudent(student_id)) {
-                        System.out.println("Xóa sinh viên thành công!!!");
-                    } else {
-                        System.out.println("Không tìm thấy sinh viên có id " + student_id);
-                    }
+                    boolean result = sm.deleteStudent(student_id);
+                    if (result) System.out.println("Xóa sinh viên thành công");
+                    else System.out.println("Không thể xóa sinh viên");
                     break;
                 }
                 case 4: {
                     System.out.print("Nhập id sinh viên: ");
                     String student_id = sc.nextLine();
-                    if (sm.updateStudent(student_id, sc)) {
-                        System.out.println("Cập nhật thông tin sinh viên thành công!!!");
-                    }
-                    else {
-                        System.out.println("Không tìm thấy sinh viên có id " + student_id);
+                    System.out.print("Nhập tên mới (Nhấn Enter để bỏ qua): ");
+                    String name = sc.nextLine();
+                    System.out.print("Nhập điểm mới (Nhấn -1 để bỏ qua): ");
+                    String stringMark = sc.nextLine();
+                    double markInp = (stringMark.isBlank()) ? -1 : Double.parseDouble(stringMark);
+                    Double mark = (markInp == -1) ? null : markInp;
+                    boolean result = sm.updateStudent(student_id, name, mark);
+                    if (result) {
+                        System.out.println("Cập nhật sinh viên thành công");
+                    } else {
+                        System.out.println("Không thể cập nhật sinh viên");
                     }
                     break;
                 }
@@ -58,7 +81,6 @@ public class Main {
                     System.out.println("Lựa chọn không hợp lệ");
             }
         } while (choice != 0);
-        sm.saveToFile();
         sc.close();
     }
 }
